@@ -13,7 +13,7 @@ public class PasswordGenerator {
         SecureRandom random = new SecureRandom();
         StringBuilder password = new StringBuilder();
 
-        int specialCharCount = (int) Math.ceil(length * 0.1);
+        int specialCharCount = (int) (length * 0.1); //fix it ca nu mere bine
 
         //special characters
         for (int i = 0; i < specialCharCount; i++) {

@@ -26,6 +26,10 @@ public class PasswordEntry {
         return password.get();
     }
 
+    public void setPassword(String newPassword) {
+        password.set(newPassword);
+    }
+
     public StringProperty urlProperty() {
         return url;
     }

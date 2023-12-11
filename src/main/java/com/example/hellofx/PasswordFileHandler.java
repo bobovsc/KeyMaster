@@ -15,19 +15,48 @@ public class PasswordFileHandler {
 
     public static void writePasswordToFile(String url, String username, String password) {
         try {
-            File file = new File(FILE_NAME);
-            FileWriter fr = new FileWriter(file, true);
-            BufferedWriter br = new BufferedWriter(fr);
+            String encryptedPassword = EncryptionUtil.encrypt(password, PasswordManagerApp.getMasterPassword());
+            if (encryptedPassword != null) {
+                File file = new File(FILE_NAME);
+                FileWriter fr = new FileWriter(file, true);
+                BufferedWriter br = new BufferedWriter(fr);
 
-            br.write(url + ":" + username + ":" + password);
-            br.newLine();
+                br.write(url + ":" + username + ":" + encryptedPassword);
+                br.newLine();
 
-            br.close();
-            fr.close();
+                br.close();
+                fr.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    public static void updatePasswordFile(ObservableList<PasswordEntry> data) {
+        try {
+            File file = new File(FILE_NAME);
+            FileWriter fw = new FileWriter(file);
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            for (PasswordEntry entry : data) {
+                String url = entry.getUrl();
+                String username = entry.getUsername();
+                String password = entry.getPassword();
+
+                String encryptedPassword = EncryptionUtil.encrypt(password, PasswordManagerApp.getMasterPassword());
+                if (encryptedPassword != null) {
+                    bw.write(url + ":" + username + ":" + encryptedPassword);
+                    bw.newLine();
+                }
+            }
+
+            bw.close();
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static TableView<PasswordEntry> getPasswords() {
         TableView<PasswordEntry> table = new TableView<>();

@@ -9,11 +9,15 @@ import javafx.stage.Stage;
 
 public class PasswordManagerApp extends Application {
 
-    private static final String MASTER_PASSWORD = "pass";
+    private static String MASTER_PASSWORD = "pass";
     private Stage primaryStage;
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public static String getMasterPassword() {
+        return MASTER_PASSWORD;
     }
 
     @Override
@@ -44,13 +48,11 @@ public class PasswordManagerApp extends Application {
         loginButton.setOnAction(e -> {
             String enteredPassword = passwordField.getText();
             if (authenticate(enteredPassword)) {
-                //successful login
                 primaryStage.setTitle("Password Manager");
                 primaryStage.setScene(createMainScene());
                 primaryStage.show();
                 ((Stage) loginButton.getScene().getWindow()).close();
             } else {
-                //error message
                 showAlert("Incorrect Password", "Please enter the correct password.");
             }
         });
@@ -74,5 +76,9 @@ public class PasswordManagerApp extends Application {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public static void updateMasterPassword(String newPassword) {
+        MASTER_PASSWORD = newPassword;
     }
 }
